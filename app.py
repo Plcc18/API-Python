@@ -3,7 +3,7 @@ from flask import Flask #importando framework Flask
 from flask_sqlalchemy import SQLAlchemy #importando SQLAlchemy (biblioteca de ORM)
 
 app = Flask(__name__) #instância do Flask
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecommerce.db' #configurando banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db' #configurando banco de dados
 
 db = SQLAlchemy(app) #iniciando o banco de dados / conexão
 
