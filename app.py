@@ -29,7 +29,7 @@ def add_book(): #função para dicionar livros
 def delete_book(book_id):
   book = Book.query.get(book_id) #variável que busca o id do livro
   if book: #condicional que verifica se o id existe
-    db.session.delete(book_id)
+    db.session.delete(book)
     db.session.commit()
     return jsonify({"message": "Book deleted successfully"}) #retorno de deleção
   return jsonify({"message": "Book not found"}), 404 #retorno de erro
