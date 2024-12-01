@@ -1,5 +1,5 @@
 #importações
-from flask import Flask, request #importando framework Flask e função request
+from flask import Flask, request, jsonify #importando framework Flask, função request e jsonify
 from flask_sqlalchemy import SQLAlchemy #importando SQLAlchemy (biblioteca de ORM)
 
 app = Flask(__name__) #instância do Flask
@@ -16,9 +16,14 @@ class Book(db.Model):
 
 #definindo rota para adicionar livros
 @app.route('/api/books/add', methods=["POST"]) #local da rota e método
-def add_product():
+def add_book(): #função para dicionar livros
   data = request.json #dados enviados em json
-  return data #retorno de dados
+  if 'name' in data and 'price' in data: #condicional que verifica se as chaves existem
+    book = Book(name=data["name"], price=data["price"], description=data.get("description", "")) #obtendo informações do livro
+    db.session.add(book) #adicionando livro ao banco de dados
+    db.session.commit() #comitando
+    return jsonify({"message": "Book added successfully"}) #retorno de cadastro
+  return jsonify({"message": "Invalid book data"}), 400 #retorno de erro
 
 #definindo rota raiz e função executada ao acessá-la
 @app.route('/')
