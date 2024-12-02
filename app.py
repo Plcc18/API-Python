@@ -17,7 +17,7 @@ class Book(db.Model):
 #definindo rota para adicionar livros
 @app.route('/api/books/add', methods=["POST"]) #local da rota e método
 def add_book(): #função para dicionar livros
-  data = request.json #dados enviados em json
+  data = request.json #dados requisitados em json
   if 'name' in data and 'price' in data: #condicional que verifica se as chaves existem
     book = Book(name=data["name"], price=data["price"], description=data.get("description", "")) #obtendo informações do livro
     db.session.add(book) #adicionando livro ao banco de dados
@@ -48,6 +48,27 @@ def get_book_details(book_id): #função para buscar livros
       "description": book.description
     })
   return jsonify({"message": "Book not found"}), 404 #retorno de erro
+
+#definindo rota para atualizar um livro pelo id
+@app.route('/api/books/update/<int:book_id>', methods=["PUT"])
+def update_book(book_id): 
+  book = Book.query.get(book_id)
+  if not book: #condicional que verifica se não existe livro
+    return jsonify({"message": "book not found"}), 404 #retorno de erro 
+  
+  data = request.json #dados requisitados em json
+  # condicionais que verificam os dados para serem atualizados
+  if 'name' in data:
+    book.name = data['name']
+
+  if 'price' in data:
+    book.price = data['price']
+    
+  if 'description' in data:
+    book.description = data['description']
+
+  db.session.commit() #comitando
+  return jsonify({"message": "Book update successfully"}) #retorno de atualização
 
 #definindo rota raiz e função executada ao acessá-la
 @app.route('/')
