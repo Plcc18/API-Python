@@ -24,14 +24,29 @@ def add_book(): #função para dicionar livros
     db.session.commit() #comitando
     return jsonify({"message": "Book added successfully"}) #retorno de cadastro
   return jsonify({"message": "Invalid book data"}), 400 #retorno de erro
-  
-@app.route('/api/books/delete/<int:book_id>', methods=["DELETE"]) #rota para deletar livros
-def delete_book(book_id):
+
+#definindo rota para deletar livros
+@app.route('/api/books/delete/<int:book_id>', methods=["DELETE"])
+def delete_book(book_id): #função para deletar livros
   book = Book.query.get(book_id) #variável que busca o id do livro
   if book: #condicional que verifica se o id existe
     db.session.delete(book)
     db.session.commit()
     return jsonify({"message": "Book deleted successfully"}) #retorno de deleção
+  return jsonify({"message": "Book not found"}), 404 #retorno de erro
+
+#definindo rota para exibir detalhes de um livro pelo id
+@app.route('/api/books/<int:book_id>', methods=["GET"]) 
+def get_book_details(book_id): #função para buscar livros
+  book = Book.query.get(book_id) #variável que busca o id do livro
+  if book: #condicional que verifica se o id existe
+    #retorno de dados em json
+    return jsonify({
+      "id": book.id,
+      "name": book.name,
+      "price": book.price,
+      "description": book.description
+    })
   return jsonify({"message": "Book not found"}), 404 #retorno de erro
 
 #definindo rota raiz e função executada ao acessá-la
