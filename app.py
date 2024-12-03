@@ -1,11 +1,13 @@
 #importações
 from flask import Flask, request, jsonify #importando framework Flask, função request e jsonify
 from flask_sqlalchemy import SQLAlchemy #importando SQLAlchemy (biblioteca de ORM)
+from flask_cors import CORS #importando módulo CORS
 
 app = Flask(__name__) #instância do Flask
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db' #configurando banco de dados
 
 db = SQLAlchemy(app) #iniciando o banco de dados / conexão
+CORS(app) #middleware do CORS
 
 #modelando banco de dados
 class Book(db.Model):
