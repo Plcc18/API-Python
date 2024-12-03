@@ -37,7 +37,7 @@ def delete_book(book_id): #função para deletar livros
 
 #definindo rota para exibir detalhes de um livro pelo id
 @app.route('/api/books/<int:book_id>', methods=["GET"]) 
-def get_book_details(book_id): #função para buscar livros
+def get_book_details(book_id): #função para buscar detalhes de livros
   book = Book.query.get(book_id) #variável que busca o id do livro
   if book: #condicional que verifica se o id existe
     #retorno de dados em json
@@ -51,8 +51,8 @@ def get_book_details(book_id): #função para buscar livros
 
 #definindo rota para atualizar um livro pelo id
 @app.route('/api/books/update/<int:book_id>', methods=["PUT"])
-def update_book(book_id): 
-  book = Book.query.get(book_id)
+def update_book(book_id): #função para atualizar livros
+  book = Book.query.get(book_id) #variável que busca o id do livro
   if not book: #condicional que verifica se não existe livro
     return jsonify({"message": "book not found"}), 404 #retorno de erro 
   
@@ -69,6 +69,22 @@ def update_book(book_id):
 
   db.session.commit() #comitando
   return jsonify({"message": "Book update successfully"}) #retorno de atualização
+
+#definindo rota para listar todos os livros
+@app.route('/api/books', methods=["GET"])
+def get_books():
+  books = Book.query.all()
+  book_list = [] #lista para os livros
+  for book in books: #loop 
+    #retorno de dados em json
+    book_data = {
+      "id": book.id,
+      "name": book.name,
+      "price": book.price,
+    }
+    book_list.append(book_data) #adiciona livros a lista
+  
+  return jsonify(book_list) #retorno da lista
 
 #definindo rota raiz e função executada ao acessá-la
 @app.route('/')
