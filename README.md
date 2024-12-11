@@ -4,7 +4,6 @@ Este projeto é uma API desenvolvida em Python com o framework Flask para gerenc
 
 ## Desenvolvimento do Projeto 🚧
 
-- **Status:** Em desenvolvimento.
 - **Objetivo:** Criar uma API funcional para gerenciamento de uma biblioteca/livraria.
 
 ## Funcionalidades da API 🌟
